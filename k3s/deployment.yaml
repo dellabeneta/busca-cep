@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: cep
-          image: dellabeneta/cep:dev
+          image: dellabeneta/cep:v1
           ports:
             - containerPort: 8080
           resources:
