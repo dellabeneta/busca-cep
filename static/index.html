@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta CEP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Consulta de CEP</h1>
+        <div class="input-group">
+            <input type="text" id="cepInput" placeholder="Digite o CEP" maxlength="9">
+            <button id="searchBtn">Consultar</button>
+        </div>
+        <div id="result">
+            </div>
+    </div>
+
+    <script>
+        const cepInput = document.getElementById('cepInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const resultDiv = document.getElementById('result');
+
+        // Formatação automática do CEP enquanto o usuário digita
+        cepInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+            value = value.replace(/^(\d{5})(\d)/, '$1-$2'); // Adiciona o hífen
+            e.target.value = value;
+        });
+
+        // Função para consultar o CEP
+        const searchCep = async () => {
+            const cep = cepInput.value.replace(/\D/g, ''); // Pega só os números
+            resultDiv.innerHTML = '<p>Buscando...</p>';
+
+            if (cep.length !== 8) {
+                resultDiv.innerHTML = '<p class="error">CEP inválido. Digite 8 números.</p>';
+                return;
+            }
+
+            try {
+                // Chama o nosso backend Go
+                const response = await fetch(`/consultar?cep=${cep}`);
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                       // Mensagem ajustada para CEP inválido
+                       throw new Error('CEP inválido.');
+                    }
+                    // Mensagem para outros erros de servidor
+                    throw new Error('Falha na comunicação com o servidor.');
+                }
+
+                const data = await response.json();
+
+                // Exibe o resultado
+                resultDiv.innerHTML = `
+                    <p><strong>CEP:</strong> ${data.cep}</p>
+                    <p><strong>Logradouro:</strong> ${data.logradouro}</p>
+                    <p><strong>Bairro:</strong> ${data.bairro}</p>
+                    <p><strong>Cidade/UF:</strong> ${data.localidade}/${data.uf}</p>
+                    <p><strong>DDD:</strong> ${data.ddd}</p>
+                `;
+
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">${error.message}</p>`;
+            }
+        };
+
+        searchBtn.addEventListener('click', searchCep);
+        
+        // Permite consultar apertando "Enter" no campo de input
+        cepInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                searchCep();
+            }
+        });
+    </script>
+</body>
+</html>
