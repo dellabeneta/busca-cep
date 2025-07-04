@@ -1,8 +1,7 @@
 ## Consulta CEP
 
-[![Go Version](https://img.shields.io/badge/Go-1.24.3-00ADD8?style=flat-square&logo=go)](https://golang.org)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker)](https://hub.docker.com/r/dellabeneta/cep)
+![Pipeline](https://github.com/dellabeneta/busca-cep/actions/workflows/main.yaml/badge.svg)
+![GHCR version](https://img.shields.io/badge/ghcr.io%2Fdellabeneta%2Fcep-v7-blue)
 
 Um serviço web para consulta de CEP brasileiro, desenvolvido em Go. Consulte rapidamente informações de endereço a partir do CEP usando uma interface web simples e responsiva.
 
@@ -29,7 +28,7 @@ Um serviço web para consulta de CEP brasileiro, desenvolvido em Go. Consulte ra
 **Instalação Local**
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/busca-cep.git
+git clone https://github.com/seu-dellabeneta/busca-cep.git
 cd busca-cep
 
 # Execute a aplicação
